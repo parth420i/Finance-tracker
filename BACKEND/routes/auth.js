@@ -3,6 +3,16 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const User = require('../models/User');
+const cors = require('cors');
+
+// Apply CORS to auth routes strictly
+router.use(cors({
+    origin: [
+        "https://finance-tracker-two-mocha.vercel.app",
+        "http://localhost:5173"
+    ],
+    credentials: true
+}));
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
