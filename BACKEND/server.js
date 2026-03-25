@@ -8,27 +8,24 @@ connectDB();
 
 const app = express();
 
-// Middleware
+// ✅ FIXED CORS (SIMPLIFIED + STABLE)
 const allowedOrigins = [
     "https://finance-tracker-two-mocha.vercel.app",
     "http://localhost:5173",
-    "http://localhost:3000",
-    process.env.FRONTEND_URL?.replace(/\/$/, "")
-].filter(Boolean);
+    "http://localhost:3000"
+];
 
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
-            callback(null, true);
-        } else {
-            console.warn(`CORS Blocked: ${origin}`);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: allowedOrigins,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
+// ✅ VERY IMPORTANT → HANDLE PREFLIGHT REQUESTS
+app.options("*", cors());
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -42,7 +39,9 @@ app.use('/api/subscriptions', require('./routes/subscriptions'));
 app.use('/api/debts', require('./routes/debts'));
 
 // Health check
-app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date() }));
+app.get('/api/health', (req, res) =>
+    res.json({ status: 'OK', timestamp: new Date() })
+);
 
 // Global error handler
 app.use((err, req, res, next) => {
@@ -52,5 +51,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
