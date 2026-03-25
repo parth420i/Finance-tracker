@@ -89,35 +89,39 @@ router.put('/profile', protect, async (req, res) => {
 router.post('/google', async (req, res) => {
     try {
         const { idToken } = req.body;
+        console.log("➡️ Google Login Attempt :: Checking Client ID in Env:", process.env.GOOGLE_CLIENT_ID?.substring(0, 10) + "...");
+
         const ticket = await client.verifyIdToken({
             idToken,
             audience: process.env.GOOGLE_CLIENT_ID,
         });
-        const { sub: googleId, email, name } = ticket.getPayload();
 
+        const payload = ticket.getPayload();
+        console.log("✅ Google Token Verified :: User:", payload.email);
+
+        const { sub: googleId, email, name } = payload;
         let user = await User.findOne({ $or: [{ googleId }, { email }] });
 
         if (user) {
+            console.log("Found existing user:", user.email);
             if (!user.googleId) {
                 user.googleId = googleId;
                 await user.save();
             }
         } else {
-            user = await User.create({
-                name,
-                email,
-                googleId,
-            });
+            console.log("Creating new Google user:", email);
+            user = await User.create({ name, email, googleId });
         }
 
-        res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user._id),
-        });
+        const token = generateToken(user._id);
+        res.json({ _id: user._id, name: user.name, email: user.email, token });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        console.error("❌ Google Login Failed Error Detail:", {
+            message: err.message,
+            stack: err.stack?.substring(0, 150),
+            clientIdProvided: process.env.GOOGLE_CLIENT_ID?.substring(0, 5) + "..."
+        });
+        res.status(500).json({ message: 'Google authentication failed internally: ' + err.message });
     }
 });
 
