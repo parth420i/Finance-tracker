@@ -9,12 +9,21 @@ connectDB();
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5000',
+    'https://finance-tracker-two-mocha.vercel.app',
+    process.env.FRONTEND_URL
+].filter(Boolean);
+
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests from any localhost port (Vite may pick different ports)
-        if (!origin || origin.match(/^http:\/\/localhost:\d+$/)) {
+        // Allow requests with no origin (like mobile apps or curl) or matching our allowed origins
+        if (!origin || allowedOrigins.some(o => origin.startsWith(o)) || origin.match(/^http:\/\/localhost:\d+$/)) {
             callback(null, true);
         } else {
+            console.warn(`Blocked by CORS: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
