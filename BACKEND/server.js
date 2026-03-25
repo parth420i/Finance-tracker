@@ -10,9 +10,10 @@ const app = express();
 
 // Middleware
 const allowedOrigins = [
-    process.env.FRONTEND_URL?.replace(/\/$/, ""),
+    "https://finance-tracker-two-mocha.vercel.app",
     "http://localhost:5173",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    process.env.FRONTEND_URL?.replace(/\/$/, "")
 ].filter(Boolean);
 
 app.use(cors({
@@ -25,6 +26,8 @@ app.use(cors({
         }
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
