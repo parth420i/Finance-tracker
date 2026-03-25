@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-blue-600: #2563eb;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #374151;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mesh Gradient Background */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.bg-mesh-gradient {
+  background: linear-gradient(-45deg, #e0f2fe, #f0f9ff, #f9fafb, #dcfce7, #fef3c7);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+
+.dark .bg-mesh-gradient {
+  background: linear-gradient(-45deg, #020617, #082f49, #064e3b, #450a0a, #020617);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+
+.glass-card {
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.dark .glass-card {
+  background-color: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.1);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.dark .glass-card:hover {
+  background-color: rgba(15, 23, 42, 0.5);
+}
+
+/* Base styles */
+body {
+  font-family: 'Outfit', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  transition: background-color 0.3s ease;
+}
+
+body.bg-mesh-gradient {
+  /* Already handled by class */
+}
+
+/* Ensure body has the class by default if not set in JSX */
+html,
+body {
+  height: 100%;
+}

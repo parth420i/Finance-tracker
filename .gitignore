@@ -1,0 +1,101 @@
+# =========================
+
+# 🚫 Node Modules
+
+# =========================
+
+node_modules/
+**/node_modules/
+
+# =========================
+
+# 🔐 Environment Variables
+
+# =========================
+
+.env
+.env.*
+**/.env
+
+# =========================
+
+# 📦 Logs
+
+# =========================
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+
+# 🧪 Build / Production
+
+# =========================
+
+dist/
+build/
+.out/
+.next/
+
+# =========================
+
+# ⚙️ Cache / Temp
+
+# =========================
+
+.cache/
+.tmp/
+.temp/
+
+# =========================
+
+# 🧾 OS Files
+
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+
+# 🧠 IDE / Editor Files
+
+# =========================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+
+# 📦 Package Lock (optional)
+
+# =========================
+
+# Uncomment if you don’t want lock files
+
+# package-lock.json
+
+# yarn.lock
+
+# =========================
+
+# 🧪 Testing
+
+# =========================
+
+coverage/
+
+# =========================
+
+# 🔥 Misc
+
+# =========================
+
+*.tgz
+*.bak
+*.pid
